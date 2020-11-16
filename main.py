@@ -1,5 +1,7 @@
 import requests
 
+from pingpong import start
+
 
 def get_json_from_api():
     #get location of counters
@@ -24,4 +26,5 @@ def get_json_from_api():
 
 if __name__ == '__main__':
     get_json_from_api()
+    start()
 
