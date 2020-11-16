@@ -11,9 +11,11 @@ class MyTestCase(unittest.TestCase):
     def test_connect_to_db(self):
         conn = connect_to_db()
         cur = conn.cursor()
+        # cur.execute('SELECT version()')
         cur.execute('SELECT version()')
 
         db_version = cur.fetchone()
+        print(db_version)
         self.assertIsNotNone(db_version, "connected")
 
     def test_get_json_from_api(self):

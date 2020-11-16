@@ -10,6 +10,7 @@ def get_json_from_api():
     json = request.json()
     count = 0
     for j in json['features']:
+        print(len(json['features']))
         print(json['features'][count]['properties']['road_en'])
         print(json['features'][count]['id'])
         count+=1
@@ -19,7 +20,6 @@ def get_json_from_api():
     live_req= requests.get(url_live)
     json_live = live_req.json()
     print('live data ',json_live)
-
 
 
 
