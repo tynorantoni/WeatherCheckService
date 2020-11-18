@@ -20,7 +20,7 @@ class TestClass:
         connection.close()
 
     def test_connect_to_db(self, setUp):
-        # conn = connect_to_db()
+
         cur = setUp.cursor()
         cur.execute('SELECT version()')
         db_version = cur.fetchone()
@@ -113,7 +113,6 @@ class TestClass:
             with pingpong.app.app_context():
                 pingpong.start()
             yield client
-
 
     def test_pong(self,setUpFlask):
         value = setUpFlask.get('/ping')
