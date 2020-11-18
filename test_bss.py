@@ -5,11 +5,10 @@ import pytest
 import requests
 
 from requests import RequestException
-from xprocess import ProcessStarter
 
 import pingpong
 from dbconnector import connect_to_db
-from dbmanipulation import list_of_all_counters, get_json_from_location, count_all_the_cyclists
+from jsonmanipulation import list_of_all_counters, get_json_from_location, count_all_the_cyclists
 
 
 class TestClass:
@@ -106,43 +105,6 @@ class TestClass:
 
         assert count_all_the_cyclists(json) > 0
 
-
-
-
-
-    # def test_get_json_from_api(self):
-    #     self.assertEqual(True, False)
-    #
-    # def test_cronjob(self):
-    #     self.assertEqual(True, False)
-    #
-
-    @pytest.fixture
-    def setUpFlask(xprocess):
-        class Starter(ProcessStarter):
-            # startup pattern
-            pattern = "PATTERN"
-
-            # command to start process
-            args = ['command', 'arg1', 'arg2']
-
-            # max startup waiting time
-            # optional, defaults to 120 seconds
-            timeout = 45
-
-            # max lines read from stdout when matching pattern
-            # optional, defaults to 100 lines
-            max_read_lines = 100
-
-        # ensure process is running and return its logfile
-        logfile = xprocess.ensure("myserver", Starter)
-
-        conn =  # create a connection or url/port info to the server
-        yield conn
-
-        # clean up whole process tree afterwards
-        xprocess.getinfo("myserver").terminate()
-
     @pytest.fixture()
     def setUpFlask(self):
         pingpong.app.testing = True
@@ -151,6 +113,7 @@ class TestClass:
             with pingpong.app.app_context():
                 pingpong.start()
             yield client
+
 
     def test_pong(self,setUpFlask):
         value = setUpFlask.get('/ping')

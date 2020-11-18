@@ -1,19 +1,18 @@
-from datetime import date
+import datetime
 
-import requests
-
-from dbmanipulation import *
+from jsonmanipulation import insert_all_data
 from pingpong import start
 
 
 def get_json_from_api():
-    pass
+    yesterday = datetime.today() - datetime.timedelta(days=1)
+    insert_all_data(yesterday,yesterday)
 
 
 
 
 if __name__ == '__main__':
 
-    get_json_from_api()
+    # get_json_from_api()
     start()
 
