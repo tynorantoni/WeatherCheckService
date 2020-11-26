@@ -105,18 +105,18 @@ class TestClass:
 
         assert count_all_the_cyclists(json) > 0
 
-    @pytest.fixture()
-    def setUpFlask(self):
-        pingpong.app.testing = True
-
-        with pingpong.app.test_client() as client:
-            with pingpong.app.app_context():
-                pingpong.start()
-            yield client
-
-    def test_pong(self,setUpFlask):
-        value = setUpFlask.get('/ping')
-        assert '200' in str(value)
+    # @pytest.fixture()
+    # def setUpFlask(self):
+    #     pingpong.app.testing = True
+    #
+    #     with pingpong.app.test_client() as client:
+    #         with pingpong.app.app_context():
+    #             pingpong.start()
+    #         yield client
+    #
+    # def test_pong(self,setUpFlask):
+    #     value = setUpFlask.get('/ping')
+    #     assert '200' in str(value)
 
 
 
