@@ -32,8 +32,8 @@ class TestClass:
 
         cur.execute('''CREATE TABLE weather_data_test_table
                 (id SERIAL PRIMARY KEY NOT NULL,
-                day TIMESTAMP,
-                temp NUMERIC,
+                date_of_measure TIMESTAMP,
+                temperature NUMERIC,
                 realfeel NUMERIC,
                 dew_point NUMERIC,
                 humidity NUMERIC,
@@ -53,15 +53,13 @@ class TestClass:
         query = cur.execute('SELECT * FROM weather_data_test_table;')
         assert query is None
 
-
     def test_insert_to_db(self, setUp):
-
 
         cur = setUp.cursor()
 
         cur.execute('''INSERT INTO weather_data_test_table (
-                day,
-                temp,
+                date_of_measure,
+                temperature,
                 realfeel,
                 dew_point,
                 humidity,
@@ -73,42 +71,35 @@ class TestClass:
                 snow_chance,
                 snow_prediction,
                 ice_chance,
-                ice_prediction
-                ) VALUES 
-                ({},{},{},{},{},{},{},{},{},{},{},{},{},{});'''.format(
-            day='2020-11-29T19:00:00+01:00',
-            temp=-1.5,
-            realfeel=-1.4,
-            dew_point=-3.0,
-            humidity=90,
-            wind=5.6,
-            wind_gust=9.3,
-            wind_direction='NW',
-            rain_chance=0,
-            rain_prediction=0,
-            snow_chance=13,
-            snow_prediction=0,
-            ice_chance=0,
-            ice_prediction=0
-        )
-        )
+                ice_prediction				
+                ) VALUES (
+					'2020-05-28 19:00:00', -1.5,-1.4,
+            -3.0,
+            90,
+            5.6,
+            9.3,
+            'NW',
+            0,
+            0,
+            13,
+            0,
+            666,
+            0		
+        );''')
 
+
+        rows = cur.rowcount
         setUp.commit()
-
-        query = cur.execute('SELECT ice_chance FROM weather_data_test_table;')
-        print(query)
-        assert query == 666
-
-
-
+        assert 1 == rows
 
     def test_drop_table(self, setUp):
         with pytest.raises(psycopg2.DatabaseError):
             cur = setUp.cursor()
 
             cur.execute('''DROP TABLE weather_data_test_table;''')
+            msg = cur.statusmessage
             setUp.commit()
-            cur.execute('SELECT * FROM weather_data_test_table;')
+            assert 'DROP TABLE' == msg
 
     def test_get_weather_json(self):
         try:

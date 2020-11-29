@@ -57,22 +57,22 @@ def insert_to_db(**kwargs):
         cur = conn.cursor()
 
         cur.execute('''INSERT INTO weather_data (
-        day,
-        temp,
-        realfeel,
-        dew_point,
-        humidity,
-        wind,
-        wind_gust,
-        wind_direction,
-        rain_chance,
-        rain_prediction,
-        snow_chance,
-        snow_prediction,
-        ice_chance
-        ice_prediction,
-        ) VALUES 
-        ({},{},{},{},{},{},{},{},{},{},{},{},{},{});'''.format(
+                day,
+                temp,
+                realfeel,
+                dew_point,
+                humidity,
+                wind,
+                wind_gust,
+                wind_direction,
+                rain_chance,
+                rain_prediction,
+                snow_chance,
+                snow_prediction,
+                ice_chance
+                ice_prediction,
+                ) VALUES 
+                ({},{},{},{},{},{},{},{},{},{},{},{},{},{});'''.format(
             kwargs
             )
                     )
