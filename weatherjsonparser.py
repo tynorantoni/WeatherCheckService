@@ -8,7 +8,7 @@ from dbmanipulation import insert_to_db
 
 def get_weather_json():
     try:
-        
+
         url = 'http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/' \
               '274455?apikey=foWnaIP0eucDHJdMSpn2tAT6boAH4gkv&language=pl-PL&details=true&metric=true'
 

@@ -82,13 +82,27 @@ class TestClass:
                     ice_prediction,
                     ) VALUES 
                     ({},{},{},{},{},{},{},{},{},{},{},{},{},{});'''.format(
-                kwargs
+                day='2020 - 11 - 29T19: 00:00 + 01: 00',
+                temp=-1.5,
+                realfeel= -1.4,
+                dew_point= -3.0,
+                humidity=90,
+                wind=5.6,
+                wind_gust=9.3,
+                wind_direction='NW',
+                rain_chance=0,
+                rain_prediction=0,
+                snow_chance=13,
+                snow_prediction=0,
+                ice_chance=0,
+                ice_prediction=0
             )
             )
 
             setUp.commit()
 
             query = cur.execute('SELECT ice_chance FROM weather_data_test_table;')
+            print(query)
             assert query == 666
 
         except (Exception, psycopg2.DatabaseError) as error:
