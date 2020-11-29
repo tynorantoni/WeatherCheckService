@@ -8,11 +8,23 @@ def create_table():
         conn = connect_to_db()
         cur = conn.cursor()
 
-        cur.execute('''CREATE TABLE brussels_data
+        cur.execute('''CREATE TABLE weather_data
         (id SERIAL PRIMARY KEY NOT NULL,
-        date_of_count DATE,
-        street_name TEXT,
-        day_cnt VarChar(10));'''
+        day TIMESTAMP,
+        temp NUMERIC,
+        realfeel NUMERIC,
+        dew_point NUMERIC,
+        humidity NUMERIC,
+        wind NUMERIC,
+        wind_gust NUMERIC,
+        wind_direction TEXT,
+        rain_chance NUMERIC,
+        rain_prediction NUMERIC,
+        snow_chance NUMERIC,
+        snow_prediction NUMERIC,
+        ice_chance NUMERIC,
+        ice_prediction NUMERIC,
+        );'''
                     )
 
         conn.commit()
@@ -29,7 +41,7 @@ def drop_table():
         conn = connect_to_db()
         cur = conn.cursor()
 
-        cur.execute('''DROP TABLE brussels_data;''')
+        cur.execute('''DROP TABLE weather_data;''')
         conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -39,14 +51,30 @@ def drop_table():
         conn.close()
 
 
-def insert_to_db(date_of_counting, street_name, total_cyclists):
+def insert_to_db(**kwargs):
     try:
         conn = connect_to_db()
         cur = conn.cursor()
 
-        cur.execute('''INSERT INTO brussels_data 
-        (date_of_count, street_name, day_cnt) VALUES 
-        ({},{},{});'''.format(date_of_counting, street_name, total_cyclists)
+        cur.execute('''INSERT INTO weather_data (
+        day,
+        temp,
+        realfeel,
+        dew_point,
+        humidity,
+        wind,
+        wind_gust,
+        wind_direction,
+        rain_chance,
+        rain_prediction,
+        snow_chance,
+        snow_prediction,
+        ice_chance
+        ice_prediction,
+        ) VALUES 
+        ({},{},{},{},{},{},{},{},{},{},{},{},{},{});'''.format(
+            kwargs
+            )
                     )
 
         conn.commit()

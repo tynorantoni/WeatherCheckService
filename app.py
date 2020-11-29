@@ -4,25 +4,24 @@ from flask_restful import Api
 from pingpong import PingPong
 import datetime
 
-from jsonmanipulation import insert_all_data
+from weatherjsonparser import insert_all_data
 
 
 class Config(object):
     JOBS = [
         {
-            'id': 'crawl_brussels_data',
-            'func': 'app:get_json_from_api',
+            'id': 'check_weather',
+            'func': 'app:check_weather',
             'trigger': 'interval',
-            'seconds': 86400
+            'seconds': 1800
         }
     ]
 
     SCHEDULER_API_ENABLED = True
 
 
-def get_json_from_api():
-    # yesterday = datetime.today() - datetime.timedelta(days=1)
-    # insert_all_data(yesterday,yesterday)
+def check_weather():
+
     pass
 
 
