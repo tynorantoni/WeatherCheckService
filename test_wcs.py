@@ -27,88 +27,80 @@ class TestClass:
         assert db_version is not None
 
     def test_create_table(self, setUp):
-        try:
-            cur = setUp.cursor()
 
-            cur.execute('''CREATE TABLE weather_data_test_table
-                    (id SERIAL PRIMARY KEY NOT NULL,
-                    day TIMESTAMP,
-                    temp NUMERIC,
-                    realfeel NUMERIC,
-                    dew_point NUMERIC,
-                    humidity NUMERIC,
-                    wind NUMERIC,
-                    wind_gust NUMERIC,
-                    wind_direction TEXT,
-                    rain_chance NUMERIC,
-                    rain_prediction NUMERIC,
-                    snow_chance NUMERIC,
-                    snow_prediction NUMERIC,
-                    ice_chance NUMERIC,
-                    ice_prediction NUMERIC
-                    );'''
-                        )
+        cur = setUp.cursor()
 
-            setUp.commit()
-            query = cur.execute('SELECT * FROM weather_data_test_table;')
-            assert query == 'None'
+        cur.execute('''CREATE TABLE weather_data_test_table
+                (id SERIAL PRIMARY KEY NOT NULL,
+                day TIMESTAMP,
+                temp NUMERIC,
+                realfeel NUMERIC,
+                dew_point NUMERIC,
+                humidity NUMERIC,
+                wind NUMERIC,
+                wind_gust NUMERIC,
+                wind_direction TEXT,
+                rain_chance NUMERIC,
+                rain_prediction NUMERIC,
+                snow_chance NUMERIC,
+                snow_prediction NUMERIC,
+                ice_chance NUMERIC,
+                ice_prediction NUMERIC
+                );'''
+                    )
 
-        except (Exception, psycopg2.DatabaseError) as error:
-            print(error)
+        setUp.commit()
+        query = cur.execute('SELECT * FROM weather_data_test_table;')
+        assert query is None
 
-        finally:
-            cur.close()
 
     def test_insert_to_db(self, setUp):
 
-        try:
-            cur = setUp.cursor()
 
-            cur.execute('''INSERT INTO weather_data_test_table (
-                    day,
-                    temp,
-                    realfeel,
-                    dew_point,
-                    humidity,
-                    wind,
-                    wind_gust,
-                    wind_direction,
-                    rain_chance,
-                    rain_prediction,
-                    snow_chance,
-                    snow_prediction,
-                    ice_chance,
-                    ice_prediction
-                    ) VALUES 
-                    ({},{},{},{},{},{},{},{},{},{},{},{},{},{});'''.format(
-                day='2020-11-29T19:00:00+01:00',
-                temp=-1.5,
-                realfeel=-1.4,
-                dew_point=-3.0,
-                humidity=90,
-                wind=5.6,
-                wind_gust=9.3,
-                wind_direction='NW',
-                rain_chance=0,
-                rain_prediction=0,
-                snow_chance=13,
-                snow_prediction=0,
-                ice_chance=0,
-                ice_prediction=0
-            )
-            )
+        cur = setUp.cursor()
 
-            setUp.commit()
+        cur.execute('''INSERT INTO weather_data_test_table (
+                day,
+                temp,
+                realfeel,
+                dew_point,
+                humidity,
+                wind,
+                wind_gust,
+                wind_direction,
+                rain_chance,
+                rain_prediction,
+                snow_chance,
+                snow_prediction,
+                ice_chance,
+                ice_prediction
+                ) VALUES 
+                ({},{},{},{},{},{},{},{},{},{},{},{},{},{});'''.format(
+            day='2020-11-29T19:00:00+01:00',
+            temp=-1.5,
+            realfeel=-1.4,
+            dew_point=-3.0,
+            humidity=90,
+            wind=5.6,
+            wind_gust=9.3,
+            wind_direction='NW',
+            rain_chance=0,
+            rain_prediction=0,
+            snow_chance=13,
+            snow_prediction=0,
+            ice_chance=0,
+            ice_prediction=0
+        )
+        )
 
-            query = cur.execute('SELECT ice_chance FROM weather_data_test_table;')
-            print(query)
-            assert query == 666
+        setUp.commit()
 
-        except (Exception, psycopg2.DatabaseError) as error:
-            print(error)
+        query = cur.execute('SELECT ice_chance FROM weather_data_test_table;')
+        print(query)
+        assert query == 666
 
-        finally:
-            cur.close()
+
+
 
     def test_drop_table(self, setUp):
         with pytest.raises(psycopg2.DatabaseError):
