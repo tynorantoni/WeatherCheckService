@@ -1,7 +1,10 @@
 from configparser import ConfigParser
 import psycopg2
 
+#functions for connecting to DB instance
 
+
+# get data from file
 def config(filename='database.ini', section='postgresql'):
     try:
         parser = ConfigParser()
@@ -20,6 +23,7 @@ def config(filename='database.ini', section='postgresql'):
         print(error)
 
 
+# connect
 def connect_to_db():
     conn = None
     try:

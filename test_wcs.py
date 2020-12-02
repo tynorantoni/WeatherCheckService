@@ -1,5 +1,3 @@
-import datetime
-
 import psycopg2
 import pytest
 import requests
@@ -13,12 +11,14 @@ from weatherjsonparser import get_weather_json
 
 class TestClass:
 
+    # setup db connection
     @pytest.fixture()
     def setUp(self):
         connection = connect_to_db()
         yield connection
         connection.close()
 
+    # connect to DB
     def test_connect_to_db(self, setUp):
 
         cur = setUp.cursor()
@@ -26,6 +26,7 @@ class TestClass:
         db_version = cur.fetchone()
         assert db_version is not None
 
+    # create table for testing
     def test_create_table(self, setUp):
 
         cur = setUp.cursor()
@@ -50,9 +51,10 @@ class TestClass:
                     )
 
         setUp.commit()
-        query = cur.execute('SELECT * FROM weather_data_test_table;')
-        assert query is None
+        cur.execute('SELECT * FROM weather_data_test_table;')
+        assert cur.fetchone() is None
 
+    # insert mocked data to DB
     def test_insert_to_db(self, setUp):
 
         cur = setUp.cursor()
@@ -87,20 +89,22 @@ class TestClass:
             0		
         );''')
 
-
         rows = cur.rowcount
         setUp.commit()
         assert 1 == rows
 
+    # drop test table after tests
     def test_drop_table(self, setUp):
-        with pytest.raises(psycopg2.DatabaseError):
+        try:
             cur = setUp.cursor()
 
             cur.execute('''DROP TABLE weather_data_test_table;''')
-            msg = cur.statusmessage
             setUp.commit()
-            assert 'DROP TABLE' == msg
+            assert cur.statusmessage == 'DROP TABLE'
+        except psycopg2.DatabaseError as error:
+            print(error)
 
+    # testing Accuweather API
     def test_get_weather_json(self):
         try:
             url = 'http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/' \
@@ -112,6 +116,7 @@ class TestClass:
         except RequestException as error:
             print(error)
 
+    # test if json returns data for 12 hours
     def test_insert_values_to_db(self):
         json = get_weather_json()
         assert len(json) == 12
