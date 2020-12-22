@@ -13,7 +13,7 @@ class Config(object):
             'id': 'check_weather',
             'func': 'app:check_weather',
             'trigger': 'interval',
-            'seconds': 1800
+            'seconds': 10800
         }
     ]
 
